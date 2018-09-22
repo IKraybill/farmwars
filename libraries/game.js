@@ -102,21 +102,28 @@
     this.setplayer = function(player){
       this.player = player;
     }
+    this.display = function(){
+     for (var i = 0; i < this.entities.length; i += 1) {
+        this.entities[i].run();
+     }
+    }
     this.run = function() {
       for (var i = 0; i < this.entities.length; i += 1) {
         if(this.willdespawn){
          this.despawn(this.entities[i],i);
         }
-        if(this.entities[i]){
-          this.collisions(this.player,this.entities[i],function(a,b,result){
+        if(this.entities && this.entities[i]){
+          this.collisions(this.player,this.entities[i],function(a,b,result,gameObject){
             if(result){
               print("COllied");
               a.color = color("red");
               b.color = color("blue");
-              this.destroy(i);
+              gameObject.destroy(i);
             }
           });
-          this.entities[i].run();
+          if(this.entities && this.entities[i]){
+            this.entities[i].run();
+          }
         }
       }
     }
@@ -126,6 +133,7 @@
           //remove item 'name' = 1 means remove entities[1]
           // this.entities.remove(name, 1);
           this.entities.splice(name, 1);
+          
         }
       }
     }
@@ -138,7 +146,7 @@
     }
     this.collisions = function(a,b,func){
       if(a&& b){
-        func(a,b,collideRectRect(a.pos.x, a.pos.y, a.w, a.h, b.pos.x, b.pos.y, b.w, b.h));
+        func(a,b,collideRectRect(a.pos.x, a.pos.y, a.w, a.h, b.pos.x, b.pos.y, b.w, b.h),this);
       }
     }
   }
@@ -169,39 +177,42 @@
     } else {
       this.img = DefaultImage();
     }
-
+    this.visable = true;
+    
     var target = createVector(0, 0);
     var arrived = false;
 
     this.show = function() {
-      push();
-      angleMode(DEGREES);
-      translate(this.pos.x, this.pos.y);
-      rotate(this.angle);
-      rectMode(this.MODE);
-      ellipse(this.MODE);
-
-      fill(this.color);
-
-      if (this.debug === true) {
-        fill(random(255), random(255), random(255));
+      if(this.visable){
+        push();
+        angleMode(DEGREES);
+        translate(this.pos.x, this.pos.y);
+        rotate(this.angle);
+        rectMode(this.MODE);
+        ellipse(this.MODE);
+  
+        fill(this.color);
+  
+        if (this.debug === true) {
+          fill(random(255), random(255), random(255));
+        }
+        switch (this.type) {
+          case "rect":
+            rect(0, 0, this.w, this.h);
+            break;
+          case "circle":
+            ellipse(0, 0, this.w, this.h);
+            break;
+          case "image":
+  
+            image(this.img, 0, 0, this.w, this.h);
+            break;
+          default:
+            console.error("ERROR: Entity Type Not found");
+        }
+  
+        pop();
       }
-      switch (this.type) {
-        case "rect":
-          rect(0, 0, this.w, this.h);
-          break;
-        case "circle":
-          ellipse(0, 0, this.w, this.h);
-          break;
-        case "image":
-
-          image(this.img, 0, 0, this.w, this.h);
-          break;
-        default:
-          console.error("ERROR: Entity Type Not found");
-      }
-
-      pop();
     }
 
     this.movement = function() {
@@ -241,7 +252,7 @@
 
 
         var diff = p5.Vector.sub(this.target, this.pos);
-        var angle = atan2(diff.x, diff.y);
+        this.angle = atan2(diff.x, diff.y);
 
         var distanceToTarget = dist(this.pos.x, this.pos.y, this.target.x, this.target.y);
         if (distanceToTarget < 1) {
