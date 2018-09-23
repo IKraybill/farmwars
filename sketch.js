@@ -9,7 +9,7 @@ function setup() {
 
   tower = Tower(100, 100, 50, 50);
   game.include(tower);
-  tower = Tower(100, 100, 50, 50);
+  
   background(50);
 }
 
