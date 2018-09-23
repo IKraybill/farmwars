@@ -1,15 +1,13 @@
 var player;
 var gun;
 var tower;
-var gun;
-
 
 function setup() {
   createCanvas(600, 600);
   player = Player();
   gun = Gun();
 
-
+  tower = Tower(100, 100, 50, 50);
   game.include(tower);
   tower = Tower(100, 100, 50, 50);
   background(50);
