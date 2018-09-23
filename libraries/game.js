@@ -102,30 +102,45 @@
     this.setplayer = function(player){
       this.player = player;
     }
-    this.run = function() {
+    this.run = function(){
+     for (var i = 0; i < this.entities.length; i += 1) {
+      //check if the entitis array has objects within it
+      if(this.entities && this.entities[i]){
+        this.entities[i].run();
+        this.despawn(this.entities[i],i);
+      }
+     }
+    }
+    /*this.run = function() {
       for (var i = 0; i < this.entities.length; i += 1) {
         if(this.willdespawn){
          this.despawn(this.entities[i],i);
         }
-        if(this.entities[i]){
-          this.collisions(this.player,this.entities[i],function(a,b,result){
-            if(result){
-              print("COllied");
-              a.color = color("red");
-              b.color = color("blue");
-              this.destroy(i);
-            }
-          });
-          this.entities[i].run();
-        }
+        // if(this.entities && this.entities[i]){
+        //   this.collisions(this.player,this.entities[i],function(a,b,result,gameObject){
+        //     if(result){
+        //       print("COllied");
+        //       a.color = color("red");
+        //       b.color = color("blue");
+        //       gameObject.destroy(i);
+        //     }
+        //   });
+        //   if(this.entities && this.entities[i]){
+        //     this.entities[i].run();
+        //   }
+        // }
+        if(this.entities && this.entities[i]){
+            this.entities[i].run();
+          }
       }
-    }
+    }*/
     this.destroy = function(name) {
       if (Number.isInteger(name) === true) {
         if (name >= 0 && name < this.entities.length) {
           //remove item 'name' = 1 means remove entities[1]
           // this.entities.remove(name, 1);
           this.entities.splice(name, 1);
+          
         }
       }
     }
@@ -138,7 +153,7 @@
     }
     this.collisions = function(a,b,func){
       if(a&& b){
-        func(a,b,collideRectRect(a.pos.x, a.pos.y, a.w, a.h, b.pos.x, b.pos.y, b.w, b.h));
+        func(a,b,collideRectRect(a.pos.x, a.pos.y, a.w, a.h, b.pos.x, b.pos.y, b.w, b.h),this);
       }
     }
   }
@@ -154,10 +169,12 @@
 
     this.w = w || 10;
     this.h = h || 10;
-    this.angle = angle || 0;
+    this.ANGLE = angle || 0;
     this.speed = speed || 1;
     this.mass = 10;
-
+    
+    this.velStop = 0;
+    
     this.color = Color || color("white");
     this.MODE = mode || CORNER;
     this.debug = debug || false;
@@ -169,45 +186,56 @@
     } else {
       this.img = DefaultImage();
     }
-
+    this.visable = true;
+    
     var target = createVector(0, 0);
     var arrived = false;
 
+    this.direction = "stop";
+   
     this.show = function() {
-      push();
-      angleMode(DEGREES);
-      translate(this.pos.x, this.pos.y);
-      rotate(this.angle);
-      rectMode(this.MODE);
-      ellipse(this.MODE);
-
-      fill(this.color);
-
-      if (this.debug === true) {
-        fill(random(255), random(255), random(255));
+      if(this.visable){
+        angleMode(DEGREES);
+        rectMode(this.MODE);
+        ellipseMode(this.MODE);
+        push();
+        
+        translate(this.pos.x, this.pos.y);
+        rotate(this.ANGLE);
+        if(!this.visable){
+          this.visable = true;
+          print(this.ANGLE);
+        }
+  
+        fill(this.color);
+  
+        if (this.debug === true) {
+          fill(random(255), random(255), random(255));
+        }
+        if(this.type === "rect") {
+            rect(0, 0, this.w, this.h);
+        }else if(this.type === "circle"){
+            ellipse(0, 0, this.w, this.h);
+        }else if(this.type ===  "bullet") {
+            ellipse(0, 0, this.w, this.h);
+            fill(255, 50, 2, 150);
+            ellipse(random(-1.5, 1.5), 1 * 5, this.w, this.h);
+            fill(170, 13, 8, 75);
+            ellipse(random(-1.5, 1.5), 2 * 5, this.w, this.h);
+        }else if(this.type ===  "image") {
+            image(this.img, 0, 0, this.w, this.h);
+        }else{
+            console.error("ERROR: Entity Type Not found");
+        }
+  
+        pop();
       }
-      switch (this.type) {
-        case "rect":
-          rect(0, 0, this.w, this.h);
-          break;
-        case "circle":
-          ellipse(0, 0, this.w, this.h);
-          break;
-        case "image":
-
-          image(this.img, 0, 0, this.w, this.h);
-          break;
-        default:
-          console.error("ERROR: Entity Type Not found");
-      }
-
-      pop();
     }
 
     this.movement = function() {
       this.vel.add(this.acc);
       this.pos.add(this.vel);
-      this.vel.mult(0);
+      this.vel.mult(this.velStop);
     }
 
     this.addforce = function(force) {
@@ -217,8 +245,8 @@
       this.acc.add(f);
     }
 
-    this.rotate = function() {
-      this.angle = atan2(this.vel.x,this.vel.y);
+    this.rotate = function(angle) {
+      this.angle = angle;
     }
 
     this.mouse = function(offsetX, offsetY) {
@@ -241,7 +269,7 @@
 
 
         var diff = p5.Vector.sub(this.target, this.pos);
-        var angle = atan2(diff.x, diff.y);
+        this.angle = atan2(diff.x, diff.y);
 
         var distanceToTarget = dist(this.pos.x, this.pos.y, this.target.x, this.target.y);
         if (distanceToTarget < 1) {
@@ -296,7 +324,10 @@
       }
     }
     this.arrowkeys = function(right, left, up, down) {
+      
+      
       if (keyIsDown(RIGHT_ARROW)) {
+        this.direction = "right";
         if (isFunction(right)) {
           right(this);
         } else {
@@ -305,6 +336,7 @@
       }
 
       if (keyIsDown(LEFT_ARROW)) {
+        this.direction = "left";
         if (isFunction(left)) {
           left(this);
         } else {
@@ -313,6 +345,7 @@
       }
 
       if (keyIsDown(UP_ARROW)) {
+        this.direction = "up";
         if (isFunction(up)) {
           up(this);
         } else {
@@ -320,6 +353,7 @@
         }
       }
       if (keyIsDown(DOWN_ARROW)) {
+        this.direction = "down";
         if (isFunction(down)) {
           down(this);
         } else {
@@ -329,7 +363,7 @@
     }
 
     this.run = function() {
-      // this.rotate();
+      this.rotate();
       this.movement();
       this.show();
     }
