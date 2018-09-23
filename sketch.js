@@ -25,8 +25,8 @@ function setup() {
 }
 
 function draw() {
-  background(50);
-  image(bg,0,0);
+  background(bg);
+  // image(bg,0,0);
   
   player.move();
   player.tileMovement();
