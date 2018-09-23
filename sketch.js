@@ -2,6 +2,7 @@ var player;
 var gun;
 var tower;
 
+
 function setup() {
   createCanvas(600, 600);
   player = Player();
