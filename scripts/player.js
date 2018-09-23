@@ -4,6 +4,7 @@ p5.prototype.Player = function(){
 function createPlayer(){
   this.player = Entity(30, height / 2, null, null, null, CORNER);
   this.speed = 3;
+  this.direction = "stop";
   this.tileMovement = function(){
     push();
     
@@ -14,9 +15,13 @@ function createPlayer(){
   	pop();
   }
   
-  this.move = function(){
+  this.move = function(item){
     // rect(this.player.pos.x-100, this.player.pos.y-100, 200, 200)
     this.player.arrowkeys(this.speed,-this.speed,-this.speed,this.speed);
+    // this.player.arrowkeys(function(movement){
+    //   movement.vel.x +=1;
+    //   movement.direction ="left";
+    // },-this.speed,-this.speed,this.speed);
     
     this.player.screenwrap();
     this.player.movement();

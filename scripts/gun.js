@@ -21,4 +21,8 @@ function gun(){
       this.bullet.vel = createVector(1,0);
     }
   }
+  this.show = function(){
+    for (var i = 0; i < this.bullets.length; i += 1) {
+    }
+  }
 }

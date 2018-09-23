@@ -104,6 +104,7 @@
     }
     this.display = function(){
      for (var i = 0; i < this.entities.length; i += 1) {
+        this.entities[i].screenwrap();
         this.entities[i].run();
      }
     }
@@ -183,7 +184,7 @@
     
     var target = createVector(0, 0);
     var arrived = false;
-
+    this.direction = "stop";
     this.show = function() {
       if(this.visable){
         push();
@@ -309,7 +310,10 @@
       }
     }
     this.arrowkeys = function(right, left, up, down) {
+      
+      
       if (keyIsDown(RIGHT_ARROW)) {
+        this.direction = "right";
         if (isFunction(right)) {
           right(this);
         } else {
@@ -318,6 +322,7 @@
       }
 
       if (keyIsDown(LEFT_ARROW)) {
+        this.direction = "left";
         if (isFunction(left)) {
           left(this);
         } else {
@@ -326,6 +331,7 @@
       }
 
       if (keyIsDown(UP_ARROW)) {
+        this.direction = "up";
         if (isFunction(up)) {
           up(this);
         } else {
@@ -333,6 +339,7 @@
         }
       }
       if (keyIsDown(DOWN_ARROW)) {
+        this.direction = "down";
         if (isFunction(down)) {
           down(this);
         } else {
