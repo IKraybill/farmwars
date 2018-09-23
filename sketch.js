@@ -1,28 +1,13 @@
 var player;
-
-var bullets = [];
-var tower;
 var gun;
 
+var tower;
 
 function setup() {
   createCanvas(600, 600);
   player = Player();
   gun = Gun();
 
-
-  // game.include(bullet.bullet);
-  game.setplayer(player.player);
-  
-  // target = bullet.bullet.pos.copy();
-  
-  // for (var i = 0; i < this.bullets.length; i += 1){
-  //   if(this.bullets[i]){
-  //       this.bullets[i].bullet.visable = false;
-  //       this.bullets[i].bullet.MODE = CENTER;
-  //       game.include(this.bullets[i]);
-  //   }
-  // }
   tower = Tower(100, 100, 50, 50);
   game.include(tower);
 
