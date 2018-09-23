@@ -38,16 +38,16 @@ t = Entity(100, 100, 100, 100, null, CORNER);
 
 function draw() {
   background(bg);
-
-  player.move();
-  player.tileMovement();
-t.run();
-  gun.show();
-  var a = player.player;//Entity(mouseX, mouseY, 30, 30, null, CORNER);
+ var a = player.player;//Entity(mouseX, mouseY, 30, 30, null, CORNER);
   // a.pos.y += 100;
   var b = t;
   rect(a.pos.x, a.pos.y, a.w, a.h);
   rect(a.pos.x, a.pos.y,5,5);
+ 
+  player.move();
+  player.tileMovement();
+t.run();
+  gun.show();
   // var apos = a.pos.copy();
   playerCollision(a,t)
   
@@ -71,10 +71,9 @@ function playerCollision (a,b,offsetx,offsety) {
 function keyPressed() {
   if (key === "Z") {
     var playerPos = player.player.pos.copy()
-    var dir = player.player.direction;
     //
     //starting x,y, and Direction to fire ex: "up","down","right"
-    gun.fire(playerPos.x, playerPos.y, dir);
+    gun.fire(playerPos.x, playerPos.y);
 
     print("shoot");
   }
@@ -87,25 +86,28 @@ function keyPressed() {
     if(!playerCollision(player.player,t,100,0)){
       player.player.pos.x += 100;
     }
+    
+    gun.currentDirection = "right";
   }
   if(keyCode === UP_ARROW) {
     if(!playerCollision(player.player,t,0,-100)){
       player.player.pos.y -= 100;
     }
-    
+    gun.currentDirection = "up";
   }
   if(keyCode === LEFT_ARROW) {
     if(!playerCollision(player.player,t,-100,0)){
       player.player.pos.x -= 100;
     }
-    
+    gun.currentDirection = "left";
   }
   if(keyCode === DOWN_ARROW) {
     if(!playerCollision(player.player,t,0,100)){
       player.player.pos.y += 100;
     }
-    
+    gun.currentDirection = "down";
   }
+  print(this)
 }
 
 
