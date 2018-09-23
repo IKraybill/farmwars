@@ -92,12 +92,18 @@
     this.entities = [];
     this.group = [];
     this.player;
+    this.despawn = false;
     
     // this.screenwrap = false;
     this.willdespawn = false;
     
     this.include = function(entity) {
       this.entities.push(entity);
+    }
+    this.includes = function(entity) {
+      for (var i = 0; i < entity.length; i++) {
+        this.entities.push(entity[i]);
+      }
     }
     this.setplayer = function(player){
       this.player = player;
@@ -107,7 +113,9 @@
       //check if the entitis array has objects within it
       if(this.entities && this.entities[i]){
         this.entities[i].run();
-        this.despawn(this.entities[i],i);
+        // if(this.despawn === true){
+        //   this.despawn(this.entities[i],i);
+        // }
       }
      }
     }
