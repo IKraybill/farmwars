@@ -23,7 +23,7 @@ function setup() {
 function draw() {
   background(50);
   bullet.bulletEffect();
-  // bullet.bullet.angle;
+bullet.move();
   player.move();
   player.tileMovement();
 
@@ -33,5 +33,8 @@ function draw() {
 }
 
 function mousePressed(){
-  target = createVector(mouseX,mouseY);
+  // bullet.shoot("up");
+  // bullet.shoot("right");
+  bullet.shoot("left");
+  print(bullet);
 }

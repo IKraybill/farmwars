@@ -165,7 +165,9 @@
     this.angle = angle || 0;
     this.speed = speed || 1;
     this.mass = 10;
-
+    
+    this.velStop = 0;
+    
     this.color = Color || color("white");
     this.MODE = mode || CORNER;
     this.debug = debug || false;
@@ -218,7 +220,7 @@
     this.movement = function() {
       this.vel.add(this.acc);
       this.pos.add(this.vel);
-      this.vel.mult(0);
+      this.vel.mult(this.velStop);
     }
 
     this.addforce = function(force) {
