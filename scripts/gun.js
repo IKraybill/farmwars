@@ -4,16 +4,16 @@ p5.prototype.Gun = function() {
 
 function gun() {
   this.bullets = [];
-
-  this.fire = function(x, y, dir) {
-    if (dir !== "stop") {
+  this.currentDirection = "stop";
+  this.fire = function(x, y) {
+    if (this.currentDirection !== "stop") {
       var b = Bullet(x, y, 5, 15)
-      b.bullet.MODE = CENTER;
+      b.bullet.MODE = CORNER;
       b.bullet.type = "bullet";
 
 
       b.bullet.pos = createVector(x, y);
-      b.shoot(dir);
+      b.shoot(this.currentDirection);
 
       this.bullets.push(b.bullet);
     }
