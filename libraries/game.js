@@ -102,7 +102,7 @@
     this.setplayer = function(player){
       this.player = player;
     }
-    this.display = function(){
+    this.run = function(){
      for (var i = 0; i < this.entities.length; i += 1) {
       //check if the entitis array has objects within it
       if(this.entities && this.entities[i]){
@@ -111,7 +111,7 @@
       }
      }
     }
-    this.run = function() {
+    /*this.run = function() {
       for (var i = 0; i < this.entities.length; i += 1) {
         if(this.willdespawn){
          this.despawn(this.entities[i],i);
@@ -133,7 +133,7 @@
             this.entities[i].run();
           }
       }
-    }
+    }*/
     this.destroy = function(name) {
       if (Number.isInteger(name) === true) {
         if (name >= 0 && name < this.entities.length) {
@@ -169,7 +169,7 @@
 
     this.w = w || 10;
     this.h = h || 10;
-    this.angle = angle || 0;
+    this.ANGLE = angle || 0;
     this.speed = speed || 1;
     this.mass = 10;
     
@@ -195,12 +195,17 @@
    
     this.show = function() {
       if(this.visable){
-        push();
         angleMode(DEGREES);
-        translate(this.pos.x, this.pos.y);
-        rotate(this.angle);
         rectMode(this.MODE);
         ellipseMode(this.MODE);
+        push();
+        
+        translate(this.pos.x, this.pos.y);
+        rotate(this.ANGLE);
+        if(!this.visable){
+          this.visable = true;
+          print(this.ANGLE);
+        }
   
         fill(this.color);
   
