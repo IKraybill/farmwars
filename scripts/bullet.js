@@ -8,32 +8,34 @@ function createBullet(x, y, w, h) {
   this.bullet.velStop = 1;
   this.direction = 0;
   this.speed = 3;
-  this.shoot = function(direction) {
-    if (direction === "down") {
+  this.shoot = function(dir) {
+    if (dir === "down") {
       this.direction = 180;
       this.bullet.vel = createVector(0, this.speed);
     }
-    if (direction === "up") {
+    if (dir === "up") {
       this.direction = 0;
       this.bullet.vel = createVector(0, -this.speed);
     }
-    if (direction === "right") {
+    if (dir === "right") {
       this.direction = 90;
       this.bullet.vel = createVector(this.speed, 0);
     }
-    if (direction === "left") {
+    if (dir === "left") {
       this.direction = 270;
       this.bullet.vel = createVector(-this.speed, 0);
     }
     
-    if (direction === "stop") {
+    if (dir === "stop") {
       this.direction = 0;
       this.bullet.vel = createVector(0, 0);
     }
+    this.bullet.angle=this.direction;
+
 
   }
 
-  this.show = function() {
+  this.effect = function() {
     push();
       ellipseMode(this.bullet.MODE);
       angleMode(DEGREES);
@@ -52,7 +54,7 @@ function createBullet(x, y, w, h) {
     this.bullet.movement();
   }
   this.run = function(){
-      this.show();
+      this.effect();
       this.move();
   }
 }
