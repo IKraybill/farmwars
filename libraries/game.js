@@ -108,16 +108,23 @@
     this.setplayer = function(player){
       this.player = player;
     }
-    this.run = function(){
+    this.run = function(player,func){
      for (var i = 0; i < this.entities.length; i += 1) {
       //check if the entitis array has objects within it
       if(this.entities && this.entities[i]){
+        // this.checkCollisions(player,func);
         this.entities[i].run();
         // if(this.despawn === true){
         //   this.despawn(this.entities[i],i);
         // }
       }
      }
+    }
+    
+    this.checkCollisions = function(sprite, func){
+      for (var i = 0; i < this.entities.length; i += 1) {
+        this.collisions(sprite, this.entities[i], func);
+      }
     }
     /*this.run = function() {
       for (var i = 0; i < this.entities.length; i += 1) {

@@ -1,30 +1,32 @@
-p5.prototype.Player = function(img) {
-  return new createPlayer(img);
+p5.prototype.Player = function(img,w,h) {
+  return new createPlayer(img,w,h);
 }
 
-function createPlayer(img) {
+function createPlayer(img,w,h) {
   // x, y, w, h, Color, mode, speed, angle, debug, name, type, img
-  this.player = Entity(30, height / 2,null, CENTER, null, null, null, null, null, img);
+  this.player = Entity(30, height / 2,w,h,null, CENTER, null, null, null, null, null, img);
   this.player.type = "image";
   this.player.MODE = CENTER;
   this.player.img = img;
-  this.speed = 3;
+  this.speed = w;
 
   this.direction = "stop";
 
   this.tileMovement = function() {
     push();
-      var sc = width / 10;
+      /*var sc = width / 10;
       var p = locatePlayer(this.player.pos.x, this.player.pos.y, 15, 15);
       fill(150, map(this.player.pos.x, 0, width, 255, 0), map(this.player.pos.y, 0, width, 0, 255));
-      rect(p.x * sc, p.y * sc, sc, sc);
-      image(playerSprite,p.x * sc, p.y * sc, 50,100);
+      rect(p.x, p.y , sc, sc);
+      image(playerSprite,p.x , p.y , 50,100);*/
+      image(playerSprite,player.x , player.y , 50,100);
+      
     pop();
   }
 
   this.move = function(item) {
     // rect(this.player.pos.x-100, this.player.pos.y-100, 200, 200)
-    this.player.arrowkeys(this.speed, -this.speed, -this.speed, this.speed);
+    // this.player.arrowkeys(this.speed, -this.speed, -this.speed, this.speed);
     // this.player.arrowkeys(function(movement){
     //   movement.vel.x +=1;
     //   movement.direction ="left";
