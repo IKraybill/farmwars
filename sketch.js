@@ -3,11 +3,20 @@ var gun;
 var tower;
 var game;
 var bg;
+var gameOverImage;
 var playerSprite;
+var gameOverVisable = false;
 
 function preload(){
   bg = loadImage("./img/grass2.png");
   playerSprite = loadImage("./img/farmer.png");
+  gameOverImage = loadImage("./img/gameOver.png");
+}
+
+function gameOver(visable) {
+  if(visable){
+  image(gameOverImage, 0, 0, width, height);
+  }
 }
 
 function setup() {
@@ -26,8 +35,7 @@ function setup() {
 
 function draw() {
   background(bg);
-  // image(bg,0,0);
-  
+
   player.move();
   player.tileMovement();
 
@@ -37,6 +45,7 @@ function draw() {
   fill(color("white"));
   textSize(30);
   text("Arrows, and Z to shoot",100,height-60);
+  gameOver(gameOverVisable);
 }
 
 function keyPressed(){
@@ -52,4 +61,7 @@ function keyPressed(){
 }
 
 function mousePressed(){
+  gameOverVisable = true;
 }
+
+
