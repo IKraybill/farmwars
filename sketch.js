@@ -1,6 +1,7 @@
 var player;
 
 var gun;
+var tower;
 
 
 function setup() {
@@ -9,6 +10,8 @@ function setup() {
   gun = Gun();
 
 
+  game.include(tower);
+  tower = Tower(100, 100, 50, 50);
   background(50);
 }
 
