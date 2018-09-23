@@ -1,5 +1,4 @@
 var player;
-
 var gun;
 var tower;
 
@@ -29,7 +28,12 @@ function draw() {
 
 function keyPressed(){
   if(key === "Z"){
-    gun.fire(player);
+    var t = input.player.pos.copy()
+    var dir = input.player.direction;
+    //
+    //starting x,y, and Direction to fire ex: "up","down","right"
+    gun.fire(t.x,t.y, dir);
+
     print("shoot");
   }
 }
