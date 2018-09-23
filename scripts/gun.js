@@ -1,24 +1,31 @@
-p5.prototype.Gun = function(){
+p5.prototype.Gun = function() {
   return new gun();
 }
 
-function gun(){
-  this.bullets = [];
-  this.add = function(x,y){
-    var b = Bullet(x, y, 5,15)
-    b.bullet.visable = false;
+function gun() {
+  this.game = Game();
+
+  this.add = function(x, y, dir) {
+    var b = Bullet(x, y, 5, 15)
     b.bullet.MODE = CENTER;
-    this.bullets.push(b);
-    print(this.bullets);
+    b.bullet.type = "bullet";
+
+
+    b.bullet.pos = createVector(x, y);
+    b.shoot(dir);
+
+    this.game.include(b.bullet);
   }
-  this.shoot =  function(direction){
-    if(direction === "up"){
-      this.direction = 0;
-      this.bullet.vel = createVector(0,-1);
+
+  this.fire = function(input) {
+    var t = input.player.pos.copy()
+    var dir = input.player.direction;
+    if (dir !== "stop") {
+      this.add(t.x, t.y, dir);
     }
-    if(direction === "right"){
-      this.direction = 90;
-      this.bullet.vel = createVector(1,0);
-    }
+  }
+
+  this.show = function() {
+    this.game.run();
   }
 }
