@@ -1,18 +1,24 @@
-p5.prototype.Player = function() {
-  return new createPlayer();
+p5.prototype.Player = function(img) {
+  return new createPlayer(img);
 }
 
-function createPlayer() {
-  this.player = Entity(30, height / 2, null, null, null, CORNER);
+function createPlayer(img) {
+  // x, y, w, h, Color, mode, speed, angle, debug, name, type, img
+  this.player = Entity(30, height / 2,null, CENTER, null, null, null, null, null, img);
+  this.player.type = "image";
+  this.player.MODE = CENTER;
+  this.player.img = img;
   this.speed = 3;
+
   this.direction = "stop";
+
   this.tileMovement = function() {
     push();
-
-    var sc = width / 15;
-    var p = locatePlayer(this.player.pos.x, this.player.pos.y, 15, 15);
-    fill(150, map(this.player.pos.x, 0, width, 255, 0), map(this.player.pos.y, 0, width, 0, 255));
-    rect(p.x * sc, p.y * sc, sc, sc);
+      var sc = width / 10;
+      var p = locatePlayer(this.player.pos.x, this.player.pos.y, 15, 15);
+      fill(150, map(this.player.pos.x, 0, width, 255, 0), map(this.player.pos.y, 0, width, 0, 255));
+      rect(p.x * sc, p.y * sc, sc, sc);
+      image(playerSprite,p.x * sc, p.y * sc, 50,100);
     pop();
   }
 

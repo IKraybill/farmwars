@@ -2,16 +2,21 @@ var player;
 var gun;
 var tower;
 var game;
+var bg;
+var playerSprite;
 
+function preload(){
+  bg = loadImage("./img/grass2.png");
+  playerSprite = loadImage("./img/farmer.png");
+}
 
 function setup() {
   createCanvas(600, 600);
-  player = Player();
+  player = Player(playerSprite);
   gun = Gun();
   game = Game();
   
- 
-  
+
   tower = Tower(100, 100, 50, 50);
   game.setplayer(player);
   game.include(tower);
@@ -21,9 +26,11 @@ function setup() {
 
 function draw() {
   background(50);
+  image(bg,0,0);
+  
   player.move();
   player.tileMovement();
-  
+
   gun.show();
 
   game.run();

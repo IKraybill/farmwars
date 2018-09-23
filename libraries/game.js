@@ -93,7 +93,7 @@
     this.group = [];
     this.player;
     this.despawn = false;
-    
+
     // this.screenwrap = false;
     this.willdespawn = false;
     
@@ -189,11 +189,11 @@
     this.name = name || "default";
     this.type = type || "rect";
 
-    if (typeof img === "string") {
-      this.img = loadImage(img);
-    } else {
-      this.img = DefaultImage();
-    }
+    // if (typeof img === "string") {
+    //   this.img = loadImage(img);
+    // } else {
+      this.img = img || DefaultImage();
+    // }
     this.visable = true;
     
     var target = createVector(0, 0);
