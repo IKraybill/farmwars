@@ -1,5 +1,6 @@
 var player;
 var gun;
+var tower;
 
 
 function setup() {
@@ -7,7 +8,9 @@ function setup() {
   player = Player();
   gun = Gun();
 
-
+  //tower = Tower(100, 100, 50, 50);
+  //game.include(tower);
+  
   background(50);
 }
 
@@ -25,8 +28,8 @@ function draw() {
 
 function keyPressed(){
   if(key === "Z"){
-    var t = input.player.pos.copy()
-    var dir = input.player.direction;
+    var t = player.player.pos.copy()
+    var dir = player.player.direction;
     //
     //starting x,y, and Direction to fire ex: "up","down","right"
     gun.fire(t.x,t.y, dir);

@@ -17,11 +17,10 @@ function gun() {
     this.game.include(b.bullet);
   }
 
-  this.fire = function(input) {
-    var t = input.player.pos.copy()
-    var dir = input.player.direction;
+  this.fire = function(x,y,dir) {
+   
     if (dir !== "stop") {
-      this.add(t.x, t.y, dir);
+      this.add(x, y, dir);
     }
   }
 
