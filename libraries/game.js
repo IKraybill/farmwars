@@ -104,8 +104,11 @@
     }
     this.display = function(){
      for (var i = 0; i < this.entities.length; i += 1) {
-        this.entities[i].screenwrap();
+      //check if the entitis array has objects within it
+      if(this.entities && this.entities[i]){
         this.entities[i].run();
+        this.despawn(this.entities[i],i);
+      }
      }
     }
     this.run = function() {
@@ -113,19 +116,22 @@
         if(this.willdespawn){
          this.despawn(this.entities[i],i);
         }
+        // if(this.entities && this.entities[i]){
+        //   this.collisions(this.player,this.entities[i],function(a,b,result,gameObject){
+        //     if(result){
+        //       print("COllied");
+        //       a.color = color("red");
+        //       b.color = color("blue");
+        //       gameObject.destroy(i);
+        //     }
+        //   });
+        //   if(this.entities && this.entities[i]){
+        //     this.entities[i].run();
+        //   }
+        // }
         if(this.entities && this.entities[i]){
-          this.collisions(this.player,this.entities[i],function(a,b,result,gameObject){
-            if(result){
-              print("COllied");
-              a.color = color("red");
-              b.color = color("blue");
-              gameObject.destroy(i);
-            }
-          });
-          if(this.entities && this.entities[i]){
             this.entities[i].run();
           }
-        }
       }
     }
     this.destroy = function(name) {
@@ -184,7 +190,9 @@
     
     var target = createVector(0, 0);
     var arrived = false;
+
     this.direction = "stop";
+   
     this.show = function() {
       if(this.visable){
         push();
@@ -192,25 +200,26 @@
         translate(this.pos.x, this.pos.y);
         rotate(this.angle);
         rectMode(this.MODE);
-        ellipse(this.MODE);
+        ellipseMode(this.MODE);
   
         fill(this.color);
   
         if (this.debug === true) {
           fill(random(255), random(255), random(255));
         }
-        switch (this.type) {
-          case "rect":
+        if(this.type === "rect") {
             rect(0, 0, this.w, this.h);
-            break;
-          case "circle":
+        }else if(this.type === "circle"){
             ellipse(0, 0, this.w, this.h);
-            break;
-          case "image":
-  
+        }else if(this.type ===  "bullet") {
+            ellipse(0, 0, this.w, this.h);
+            fill(255, 50, 2, 150);
+            ellipse(random(-1.5, 1.5), 1 * 5, this.w, this.h);
+            fill(170, 13, 8, 75);
+            ellipse(random(-1.5, 1.5), 2 * 5, this.w, this.h);
+        }else if(this.type ===  "image") {
             image(this.img, 0, 0, this.w, this.h);
-            break;
-          default:
+        }else{
             console.error("ERROR: Entity Type Not found");
         }
   
@@ -231,8 +240,8 @@
       this.acc.add(f);
     }
 
-    this.rotate = function() {
-      this.angle = atan2(this.vel.x,this.vel.y);
+    this.rotate = function(angle) {
+      this.angle = angle;
     }
 
     this.mouse = function(offsetX, offsetY) {
@@ -349,7 +358,7 @@
     }
 
     this.run = function() {
-      // this.rotate();
+      this.rotate();
       this.movement();
       this.show();
     }
