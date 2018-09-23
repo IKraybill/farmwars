@@ -27,11 +27,11 @@ function setup() {
   player = Player(playerSprite,100,100);
   gun = Gun();
   game = Game();
-t = Entity(100, 100, 50, 50, null, CORNER);
+t = Entity(100, 100, 100, 100, null, CORNER);
 
   tower = Tower(100, 100, 50, 50);
   game.setplayer(player);
-  game.include(tower);
+  //game.include(tower);
 
   background(50);
 }
@@ -41,20 +41,17 @@ function draw() {
 
   player.move();
   player.tileMovement();
-
+t.run();
   gun.show();
   var a = player.player;//Entity(mouseX, mouseY, 30, 30, null, CORNER);
   // a.pos.y += 100;
   var b = t;
-  rect(a.pos.x, a.pos.y, a.w, a.h); 
-  var apos = a.pos.copy();
+  rect(a.pos.x, a.pos.y, a.w, a.h);
+  rect(a.pos.x, a.pos.y,5,5);
+  // var apos = a.pos.copy();
+  playerCollision(a,t)
   
-  if(collideRectRect(apos.x, apos.y, a.w, a.h,   b.pos.x, b.pos.y, b.w, b.h)){
-    print("up true");
-    player.player.y += 100;
-  }else{
-    print("up false");
-  }
+  
   game.run();
   fill(color("white"));
   textSize(30);
@@ -62,13 +59,22 @@ function draw() {
   gameOver(gameOverVisable);
 }
 
+function playerCollision (a,b,offsetx,offsety) {
+  var apos = a.pos.copy();
+  try{
+  return collideRectRect(apos.x + offsetx+2, apos.y + offsety +2, a.w-4, a.h-4,   b.pos.x, b.pos.y, b.w, b.h);
+  }catch(e){
+    console.error("ERROR: playerCollision() function shit the bed"+e);
+  }
+}
+
 function keyPressed() {
   if (key === "Z") {
-    var t = player.player.pos.copy()
+    var playerPos = player.player.pos.copy()
     var dir = player.player.direction;
     //
     //starting x,y, and Direction to fire ex: "up","down","right"
-    gun.fire(t.x, t.y, dir);
+    gun.fire(playerPos.x, playerPos.y, dir);
 
     print("shoot");
   }
@@ -77,18 +83,31 @@ function keyPressed() {
     gameOverVisable = true;
   }
   if(keyCode === RIGHT_ARROW) {
-    player.player.pos.x += 100;
+    
+    if(!playerCollision(player.player,t,100,0)){
+      player.player.pos.x += 100;
+    }
   }
   if(keyCode === UP_ARROW) {
-    player.player.pos.y -= 100;
+    if(!playerCollision(player.player,t,0,-100)){
+      player.player.pos.y -= 100;
+    }
+    
   }
   if(keyCode === LEFT_ARROW) {
-    player.player.pos.x -= 100;
+    if(!playerCollision(player.player,t,-100,0)){
+      player.player.pos.x -= 100;
+    }
+    
   }
   if(keyCode === DOWN_ARROW) {
-    player.player.pos.y += 100;
+    if(!playerCollision(player.player,t,0,100)){
+      player.player.pos.y += 100;
+    }
+    
   }
 }
+
 
 function collide(a, b,func) {
   if (a && b) {

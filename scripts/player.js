@@ -4,10 +4,11 @@ p5.prototype.Player = function(img,w,h) {
 
 function createPlayer(img,w,h) {
   // x, y, w, h, Color, mode, speed, angle, debug, name, type, img
-  this.player = Entity(30, height / 2,w,h,null, CENTER, null, null, null, null, null, img);
+  this.player = Entity(0, 0,w,h,null, CENTER, null, null, null, null, null, img);
   this.player.type = "image";
   this.player.MODE = CENTER;
   this.player.img = img;
+  
   this.speed = w;
 
   this.direction = "stop";
@@ -19,7 +20,7 @@ function createPlayer(img,w,h) {
       fill(150, map(this.player.pos.x, 0, width, 255, 0), map(this.player.pos.y, 0, width, 0, 255));
       rect(p.x, p.y , sc, sc);
       image(playerSprite,p.x , p.y , 50,100);*/
-      image(playerSprite,player.x , player.y , 50,100);
+      image(playerSprite,this.player.pos.x , this.player.pos.y , 50,100);
       
     pop();
   }
