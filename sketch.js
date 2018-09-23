@@ -1,6 +1,7 @@
 var player;
 var gun;
 var tower;
+var gun;
 
 
 function setup() {
