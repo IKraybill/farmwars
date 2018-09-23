@@ -3,7 +3,7 @@ var game;
 // var bullet;
 
 var bullets = [];
-
+var tower;
 
 
 // var target;
@@ -30,6 +30,8 @@ function setup() {
   //       game.include(this.bullets[i]);
   //   }
   // }
+  tower = Tower(100, 100, 50, 50);
+  game.include(tower);
 
   background(50);
 }
