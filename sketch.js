@@ -3,14 +3,19 @@ var gun;
 var tower;
 var game;
 var bg;
+var towerSprite;
 var gameOverImage;
 var playerSprite;
 var gameOverVisable = false;
+var tutorial;
+var tutorialshow = true;
 
 function preload() {
-  bg = loadImage("./img/grass2.png");
-  playerSprite = loadImage("./img/farmer.png");
+  bg = loadImage("./img/grass3.png");
+  playerSprite = loadImage("./img/character.png");
   gameOverImage = loadImage("./img/gameOver.png");
+  towerSprite = loadImage("./img/house1.png");
+  tutorial = loadImage("./img/tutorial.png");
 }
 
 function gameOver(visable) {
@@ -21,24 +26,33 @@ function gameOver(visable) {
 
 function setup() {
   createCanvas(600, 600);
+  noSmooth();
   player = Player(playerSprite,100,100);
   gun = Gun();
   game = Game();
-
-  tower = Tower(100, 100,100, 100 );
+  
+  tower = Tower(100, 100,100, 100 ,towerSprite);
   game.setplayer(player);
   game.include(tower);
 
   background(50);
+  // background(tutorial);
+  noLoop();
 }
 
 function draw() {
-  background(bg);
+  // background(tutorial);
+  image(tutorial,100,150)
+  if(!tutorialshow){  
+    tutorialshow = false;
+    background(bg);
 
   player.move();
   player.tileMovement();
-
-  tower.show();
+  if(frameCount % 250 === 0){
+  			tower.fire();
+	}
+  // tower.show();
   gun.show();
   gun.bulletOnhit(tower.baseTower, function(del){
     gun.destroy(del);
@@ -51,8 +65,8 @@ function draw() {
   game.run();
   fill(color("white"));
   textSize(30);
-  text("Arrows, and Z to shoot", 100, height - 60);
   gameOver(gameOverVisable);
+  }
 }
 
 function playerCollision (a,b,offsetx,offsety) {
@@ -69,7 +83,7 @@ function bulletCollision (a,b) {
   return collideRectRect(a.pos.x, a.pos.y, a.w, a.h,   b.pos.x, b.pos.y, b.w, b.h);
 }
 function keyPressed() {
-  if (key === "Z") {
+  if (key === " ") {
     var playerPos = player.player.pos.copy()
     //
     //starting x,y, and Direction to fire ex: "up","down","right"
@@ -117,4 +131,6 @@ function collide(a, b,func) {
   }
 }
 function mousePressed() {
+  loop();
+  tutorialshow = false;
 }

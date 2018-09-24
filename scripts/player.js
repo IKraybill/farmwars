@@ -4,7 +4,7 @@ p5.prototype.Player = function(img,w,h) {
 
 function createPlayer(img,w,h) {
   // x, y, w, h, Color, mode, speed, angle, debug, name, type, img
-  this.player = Entity(0, 0,w,h,null, CENTER, null, null, null, null, null, img);
+  this.player = Entity(0, 0,w,h,null, CENTER, null, null, null, null, "image", img);
   this.player.type = "image";
   this.player.MODE = CORNER;
   this.player.img = img;
