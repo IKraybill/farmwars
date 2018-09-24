@@ -7,9 +7,6 @@ var gameOverImage;
 var playerSprite;
 var gameOverVisable = false;
 
-//var moveDist = 0;
-
-var t;
 function preload() {
   bg = loadImage("./img/grass2.png");
   playerSprite = loadImage("./img/farmer.png");
@@ -27,29 +24,28 @@ function setup() {
   player = Player(playerSprite,100,100);
   gun = Gun();
   game = Game();
-t = Entity(100, 100, 100, 100, null, CORNER);
 
-  tower = Tower(100, 100, 50, 50);
+  tower = Tower(100, 100,100, 100 );
   game.setplayer(player);
-  //game.include(tower);
+  game.include(tower);
 
   background(50);
 }
 
 function draw() {
   background(bg);
- var a = player.player;//Entity(mouseX, mouseY, 30, 30, null, CORNER);
-  // a.pos.y += 100;
-  var b = t;
-  rect(a.pos.x, a.pos.y, a.w, a.h);
-  rect(a.pos.x, a.pos.y,5,5);
- 
+
   player.move();
   player.tileMovement();
-t.run();
+
+  tower.show();
   gun.show();
-  // var apos = a.pos.copy();
-  playerCollision(a,t)
+  gun.bulletOnhit(tower.baseTower, function(del){
+    gun.destroy(del);
+    
+    //add boom effect
+    //add shake affect
+  });
   
   
   game.run();
@@ -68,12 +64,16 @@ function playerCollision (a,b,offsetx,offsety) {
   }
 }
 
+function bulletCollision (a,b) {
+
+  return collideRectRect(a.pos.x, a.pos.y, a.w, a.h,   b.pos.x, b.pos.y, b.w, b.h);
+}
 function keyPressed() {
   if (key === "Z") {
     var playerPos = player.player.pos.copy()
     //
     //starting x,y, and Direction to fire ex: "up","down","right"
-    gun.fire(playerPos.x, playerPos.y);
+    gun.shoot(playerPos.x+(player.player.w/2), playerPos.y+(player.player.w/2));
 
     print("shoot");
   }
@@ -83,26 +83,26 @@ function keyPressed() {
   }
   if(keyCode === RIGHT_ARROW) {
     
-    if(!playerCollision(player.player,t,100,0)){
+    if(!playerCollision(player.player,tower.baseTower,100,0)){
       player.player.pos.x += 100;
     }
     
     gun.currentDirection = "right";
   }
   if(keyCode === UP_ARROW) {
-    if(!playerCollision(player.player,t,0,-100)){
+    if(!playerCollision(player.player,tower.baseTower,0,-100)){
       player.player.pos.y -= 100;
     }
     gun.currentDirection = "up";
   }
   if(keyCode === LEFT_ARROW) {
-    if(!playerCollision(player.player,t,-100,0)){
+    if(!playerCollision(player.player,tower.baseTower,-100,0)){
       player.player.pos.x -= 100;
     }
     gun.currentDirection = "left";
   }
   if(keyCode === DOWN_ARROW) {
-    if(!playerCollision(player.player,t,0,100)){
+    if(!playerCollision(player.player,tower.baseTower,0,100)){
       player.player.pos.y += 100;
     }
     gun.currentDirection = "down";

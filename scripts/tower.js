@@ -10,7 +10,7 @@ function createTower(x, y, w, h) {
 
 	this.w = w;
 	this.h = h;
-	this.gun = Gun();
+	this.shooter = Gun();
 
 	this.show = function() {
 		if(frameCount % 250 === 0){
@@ -18,7 +18,7 @@ function createTower(x, y, w, h) {
 		}
 		this.baseTower.show();
 		this.upperTower.show();
-		this.gun.show();
+		this.shooter.show();
 	}
 	this.movement = function() {
 	}
@@ -38,6 +38,6 @@ function createTower(x, y, w, h) {
 	}
 
 	this.fire = function(){
-		this.gun.fire(this.pos.x, this.pos.y + this.h / 2.0, this.randomDirection());
+		this.shooter.fire(this.pos.x, this.pos.y + this.h / 2.0, this.randomDirection());
 	}
 }
