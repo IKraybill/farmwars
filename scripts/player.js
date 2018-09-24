@@ -1,10 +1,10 @@
-p5.prototype.Player = function(img,w,h) {
-  return new createPlayer(img,w,h);
+p5.prototype.Player = function(img,x,y,w,h) {
+  return new createPlayer(img,x,y,w,h);
 }
 
-function createPlayer(img,w,h) {
+function createPlayer(img,x,y,w,h) {
   // x, y, w, h, Color, mode, speed, angle, debug, name, type, img
-  this.player = Entity(0, 0,w,h,null, CENTER, null, null, null, null, null, img);
+  this.player = Entity(x,y,w,h,null, CORNER, null, null, null, null, null, img);
   this.player.type = "image";
   this.player.MODE = CORNER;
   this.player.img = img;

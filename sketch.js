@@ -3,16 +3,19 @@ var gun;
 var tower;
 var game;
 var bg;
+var house;
+
 var gameOverImage;
 var playerSprite;
 var gameOverVisable = false;
 
-//var moveDist = 0;
 
 var t;
 function preload() {
   bg = loadImage("./img/grass2.png");
-  playerSprite = loadImage("./img/farmer.png");
+  house = loadImage("./img/house1.png");
+  
+  playerSprite = loadImage("./img/front_man.png");
   gameOverImage = loadImage("./img/gameOver.png");
 }
 
@@ -24,41 +27,53 @@ function gameOver(visable) {
 
 function setup() {
   createCanvas(600, 600);
-  player = Player(playerSprite,100,100);
+  noSmooth();
+  player = Player(playerSprite,100,300,100,100);
   gun = Gun();
   game = Game();
-t = Entity(100, 100, 100, 100, null, CORNER);
 
-  tower = Tower(100, 100, 50, 50);
+  tower = Tower(100, 100, 100, 100, house);
   game.setplayer(player);
-  //game.include(tower);
+  game.include(tower);
 
   background(50);
 }
 
 function draw() {
   background(bg);
- var a = player.player;//Entity(mouseX, mouseY, 30, 30, null, CORNER);
+  var a = player.player;//Entity(mouseX, mouseY, 30, 30, null, CORNER);
   // a.pos.y += 100;
   var b = t;
-  rect(a.pos.x, a.pos.y, a.w, a.h);
-  rect(a.pos.x, a.pos.y,5,5);
+  // rect(a.pos.x, a.pos.y, a.w, a.h);
+  // rect(a.pos.x, a.pos.y,5,5);
  
   player.move();
   player.tileMovement();
-t.run();
+  
+  tower.upperTower.run();
+  
   gun.show();
-  // var apos = a.pos.copy();
-  playerCollision(a,t)
-  
-  
+  // print(playerCollision(a,tower.upperTower))
+  // playerCollision(a,tower.upperTower)
+bulletCollsion(gun,tower.upperTower)  
   game.run();
   fill(color("white"));
   textSize(30);
   text("Arrows, and Z to shoot", 100, height - 60);
   gameOver(gameOverVisable);
 }
-
+function bulletCollsion(bulletArray,targer){
+    
+  // var apos = a.pos.copy();
+  try{
+    var apos = gun.bullets[0].bullet.pos.copy();
+    collideRectRect(apos.x, apos.y , a.w, a.h,   b.pos.x, b.pos.y, b.w, b.h);
+    collideRectRect()
+    
+  }catch(e){
+    console.error("ERROR: bulletCollsion() :"+e);
+  }
+}
 function playerCollision (a,b,offsetx,offsety) {
   var apos = a.pos.copy();
   try{
@@ -83,26 +98,26 @@ function keyPressed() {
   }
   if(keyCode === RIGHT_ARROW) {
     
-    if(!playerCollision(player.player,t,100,0)){
+    if(!playerCollision(player.player,tower.upperTower,100,0)){
       player.player.pos.x += 100;
     }
     
     gun.currentDirection = "right";
   }
   if(keyCode === UP_ARROW) {
-    if(!playerCollision(player.player,t,0,-100)){
+    if(!playerCollision(player.player,tower.upperTower,0,-100)){
       player.player.pos.y -= 100;
     }
     gun.currentDirection = "up";
   }
   if(keyCode === LEFT_ARROW) {
-    if(!playerCollision(player.player,t,-100,0)){
+    if(!playerCollision(player.player,tower.upperTower,-100,0)){
       player.player.pos.x -= 100;
     }
     gun.currentDirection = "left";
   }
   if(keyCode === DOWN_ARROW) {
-    if(!playerCollision(player.player,t,0,100)){
+    if(!playerCollision(player.player,tower.upperTower,0,100)){
       player.player.pos.y += 100;
     }
     gun.currentDirection = "down";
@@ -117,4 +132,6 @@ function collide(a, b,func) {
   }
 }
 function mousePressed() {
+  var playerPos = player.player.pos.copy()
+  gun.fire(playerPos.x, playerPos.y);
 }

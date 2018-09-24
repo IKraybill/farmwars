@@ -2,6 +2,8 @@ p5.prototype.Gun = function() {
   return new gun();
 }
 
+
+
 function gun() {
   this.bullets = [];
   this.currentDirection = "stop";
@@ -24,7 +26,7 @@ function gun() {
       //check if the entitis array has objects within it
       if(this.bullets && this.bullets[i]){
         this.bullets[i].run();
-        this.despawn(this.bullets[i],i);
+        // this.despawn(this.bullets[i],i);
       }
      }
   }
