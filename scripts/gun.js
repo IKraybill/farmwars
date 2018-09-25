@@ -19,7 +19,7 @@ function GUN() {
     }
   }
   this.fire = function(x, y,direction) {
-    this.currentDirection === direction;
+    this.currentDirection = direction;
     this.shoot(x, y);
   }
 
