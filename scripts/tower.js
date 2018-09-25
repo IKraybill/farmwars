@@ -15,12 +15,8 @@ function createTower(x, y, w, h,img) {
 	this.shooter = Gun();
 
 	this.show = function() {
-		if(frameCount % 250 === 0){
-			this.fire();
-		}
 		this.baseTower.show();
-		// this.upperTower.show();
-		// this.shooter.show();
+		this.shooter.show();
 	}
 	this.movement = function() {
 	}
@@ -40,6 +36,6 @@ function createTower(x, y, w, h,img) {
 	}
 
 	this.fire = function(){
-		this.shooter.fire(this.pos.x, this.pos.y + this.h / 2.0, "right"/*this.randomDirection()*/);
+		this.shooter.fire(this.pos.x, this.pos.y, this.randomDirection());
 	}
 }

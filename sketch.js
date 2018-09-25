@@ -52,7 +52,8 @@ function draw() {
   if(frameCount % 250 === 0){
   			tower.fire();
 	}
-  // tower.show();
+
+  tower.show();
   gun.show();
   gun.bulletOnhit(tower.baseTower, function(del){
     gun.destroy(del);
